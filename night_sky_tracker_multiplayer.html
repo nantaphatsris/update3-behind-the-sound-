@@ -1,0 +1,1100 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Behind the Sound — 1 Sound, Multiple Moods</title>
+
+  <!-- FONT -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anuphan:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- CSS -->
+  <style>
+    :root {
+      --blue: #A9D5F5;
+      --blue-dark: #5C9BCB;
+      --blue-pale: #EAF6FF;
+      --blue-soft: #F4FAFF;
+      --ink: #243447;
+      --muted: #718096;
+      --line: #E5EDF4;
+      --white: #FFFFFF;
+      --radius: 18px;
+      --shadow: 0 14px 40px rgba(67, 119, 158, .09);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--white);
+      font-family: "Anuphan", sans-serif;
+    }
+
+    button, input { font: inherit; }
+    button { cursor: pointer; }
+    a { color: inherit; text-decoration: none; }
+
+    .container {
+      width: min(1120px, calc(100% - 44px));
+      margin: auto;
+    }
+
+    .topbar {
+      height: 78px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--line);
+      background: rgba(255,255,255,.94);
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      backdrop-filter: blur(12px);
+    }
+
+    .brand {
+      font: 800 19px "Manrope", sans-serif;
+      letter-spacing: -.7px;
+    }
+
+    .brand span { color: var(--blue-dark); }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .btn {
+      border: 0;
+      border-radius: 11px;
+      padding: 12px 20px;
+      font-weight: 600;
+      transition: .2s ease;
+    }
+
+    .btn-primary {
+      background: var(--blue);
+      color: #183B55;
+    }
+
+    .btn-primary:hover {
+      background: #91C7EF;
+      transform: translateY(-1px);
+    }
+
+    .btn-outline {
+      background: white;
+      border: 1px solid var(--line);
+      color: var(--ink);
+    }
+
+    .btn-outline:hover {
+      border-color: var(--blue-dark);
+      background: var(--blue-soft);
+    }
+
+    .btn-text {
+      background: transparent;
+      color: var(--muted);
+      padding-inline: 10px;
+    }
+
+    .eyebrow {
+      color: var(--blue-dark);
+      font: 800 12px "Manrope", sans-serif;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    .muted { color: var(--muted); }
+
+    .section { padding: 82px 0; }
+
+    .section-title {
+      font: 800 clamp(28px,4vw,40px) "Manrope","Anuphan",sans-serif;
+      margin: 10px 0;
+      letter-spacing: -1.2px;
+    }
+
+    .section-intro {
+      max-width: 600px;
+      line-height: 1.8;
+      color: var(--muted);
+    }
+
+    /* LANDING PAGE */
+
+    .hero {
+      padding: 82px 0 76px;
+      overflow: hidden;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.05fr .95fr;
+      gap: 55px;
+      align-items: center;
+    }
+
+    .hero h1 {
+      font: 800 clamp(42px,6vw,72px)/1.04 "Manrope",sans-serif;
+      letter-spacing: -3.5px;
+      margin: 18px 0;
+    }
+
+    .hero h1 span { color: var(--blue-dark); }
+
+    .hero-copy {
+      max-width: 520px;
+      color: var(--muted);
+      line-height: 1.9;
+      font-size: 17px;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 12px;
+      margin-top: 28px;
+      flex-wrap: wrap;
+    }
+
+    .hero-art {
+      min-height: 390px;
+      border-radius: 30px;
+      background: var(--blue-soft);
+      position: relative;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+    }
+
+    .art-circle {
+      width: 250px;
+      height: 250px;
+      border-radius: 50%;
+      background: #D8EEFF;
+      position: absolute;
+    }
+
+    .sound-card {
+      width: min(330px,80%);
+      position: relative;
+      z-index: 1;
+      padding: 28px;
+      border: 1px solid rgba(255,255,255,.9);
+      border-radius: 22px;
+      background: rgba(255,255,255,.88);
+      box-shadow: var(--shadow);
+    }
+
+    .sound-card small {
+      color: var(--muted);
+      font: 700 11px "Manrope";
+      letter-spacing: 1.5px;
+    }
+
+    .wave {
+      height: 92px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      margin: 20px 0;
+    }
+
+    .wave i {
+      display: block;
+      width: 5px;
+      border-radius: 8px;
+      background: #83BDE8;
+    }
+
+    .wave i:nth-child(6n+1) { height: 22px; }
+    .wave i:nth-child(6n+2) { height: 48px; }
+    .wave i:nth-child(6n+3) { height: 70px; }
+    .wave i:nth-child(6n+4) { height: 38px; }
+    .wave i:nth-child(6n+5) { height: 58px; }
+    .wave i:nth-child(6n) { height: 30px; }
+
+    .sound-labels {
+      display: flex;
+      justify-content: space-between;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .benefits {
+      display: grid;
+      grid-template-columns: repeat(3,1fr);
+      gap: 18px;
+      padding-top: 25px;
+    }
+
+    .benefit {
+      border-top: 1px solid var(--line);
+      padding: 22px 8px;
+    }
+
+    .benefit strong {
+      display: block;
+      margin-bottom: 7px;
+      font: 700 17px "Manrope","Anuphan";
+    }
+
+    .benefit p {
+      color: var(--muted);
+      margin: 0;
+      line-height: 1.7;
+      font-size: 14px;
+    }
+
+    /* LOGIN / SIGN UP */
+
+    .auth-wrap {
+      min-height: calc(100vh - 78px);
+      display: grid;
+      place-items: center;
+      padding: 55px 0;
+      background: var(--blue-soft);
+    }
+
+    .auth-card {
+      width: min(440px, calc(100% - 36px));
+      padding: 38px;
+      background: white;
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      box-shadow: var(--shadow);
+    }
+
+    .auth-card h2 {
+      font: 800 30px "Manrope","Anuphan";
+      margin: 8px 0;
+    }
+
+    .field { margin: 18px 0; }
+
+    .field label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 8px;
+      font-size: 14px;
+    }
+
+    .field input {
+      width: 100%;
+      padding: 13px 14px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      outline: none;
+    }
+
+    .field input:focus {
+      border-color: var(--blue-dark);
+      box-shadow: 0 0 0 3px #DDF0FF;
+    }
+
+    .auth-card .btn {
+      width: 100%;
+      margin-top: 8px;
+    }
+
+    .auth-switch {
+      text-align: center;
+      color: var(--muted);
+      font-size: 14px;
+      margin-top: 20px;
+    }
+
+    .auth-switch button {
+      color: var(--blue-dark);
+      border: 0;
+      background: none;
+      font-weight: 700;
+    }
+
+    /* APP HEADER + HAMBURGER */
+
+    .app-header { display: none; }
+
+    .app-header .container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 76px;
+    }
+
+    .hamburger {
+      border: 1px solid var(--line);
+      background: white;
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      font-size: 22px;
+      color: var(--ink);
+    }
+
+    .drawer {
+      display: none;
+      position: absolute;
+      right: max(22px,calc((100% - 1120px)/2));
+      top: 68px;
+      width: 220px;
+      padding: 10px;
+      background: white;
+      border: 1px solid var(--line);
+      border-radius: 15px;
+      box-shadow: var(--shadow);
+      z-index: 30;
+    }
+
+    .drawer.open { display: block; }
+
+    .drawer button {
+      width: 100%;
+      text-align: left;
+      padding: 12px;
+      border: 0;
+      border-radius: 9px;
+      background: white;
+      color: var(--ink);
+    }
+
+    .drawer button:hover { background: var(--blue-soft); }
+
+    /* HOME + OTHER PAGES */
+
+    .page {
+      display: none;
+      min-height: 75vh;
+      padding: 60px 0 90px;
+    }
+
+    .page.active { display: block; }
+
+    .welcome {
+      background: var(--blue-soft);
+      border-radius: 22px;
+      padding: 34px;
+      margin-bottom: 34px;
+    }
+
+    .welcome h1 {
+      font: 800 clamp(28px,4vw,38px) "Manrope","Anuphan";
+      margin: 8px 0;
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(3,1fr);
+      gap: 18px;
+      margin-top: 25px;
+    }
+
+    .feature {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 25px;
+      background: white;
+      transition: .2s;
+      cursor: pointer;
+    }
+
+    .feature:hover {
+      transform: translateY(-3px);
+      border-color: #B9DDF6;
+      box-shadow: var(--shadow);
+    }
+
+    .feature-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      background: var(--blue-pale);
+      font-size: 23px;
+      margin-bottom: 20px;
+    }
+
+    .feature h3 {
+      margin: 0 0 8px;
+      font: 700 19px "Manrope","Anuphan";
+    }
+
+    .feature p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.7;
+      font-size: 14px;
+    }
+
+    .lesson-list {
+      display: grid;
+      gap: 12px;
+      margin-top: 28px;
+    }
+
+    .lesson {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      border: 1px solid var(--line);
+      padding: 18px 20px;
+      border-radius: 14px;
+      cursor: pointer;
+    }
+
+    .lesson:hover {
+      background: var(--blue-soft);
+      border-color: #B9DDF6;
+    }
+
+    .lesson-number {
+      color: var(--blue-dark);
+      font: 800 13px "Manrope";
+    }
+
+    .lesson p {
+      margin: 3px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .lesson-arrow {
+      margin-left: auto;
+      color: var(--blue-dark);
+      font-size: 20px;
+    }
+
+    .content-panel {
+      max-width: 760px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 28px;
+      margin-top: 25px;
+    }
+
+    .content-panel h3 { margin-top: 0; }
+
+    .content-panel p {
+      line-height: 1.85;
+      color: var(--muted);
+    }
+
+    .progress {
+      height: 8px;
+      background: #EDF3F8;
+      border-radius: 20px;
+      overflow: hidden;
+      margin: 16px 0;
+    }
+
+    .progress span {
+      display: block;
+      width: 0%;
+      height: 100%;
+      background: var(--blue-dark);
+    }
+
+    .notice {
+      color: var(--muted);
+      font-size: 13px;
+      margin-top: 16px;
+    }
+
+    footer {
+      border-top: 1px solid var(--line);
+      padding: 25px 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    /* RESPONSIVE */
+
+    @media (max-width: 760px) {
+      .hero { padding-top: 55px; }
+      .hero-grid { grid-template-columns: 1fr; gap: 35px; }
+      .hero-art { min-height: 300px; }
+      .benefits, .feature-grid { grid-template-columns: 1fr; }
+      .section { padding: 60px 0; }
+      .auth-card { padding: 28px 23px; }
+      .topbar { height: 68px; }
+      .hero h1 { letter-spacing: -2px; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- LANDING HEADER -->
+  <header class="topbar" id="landingHeader">
+    <div class="container nav-actions">
+      <a class="brand" href="#" onclick="showPage('landing')">
+        Behind the <span>Sound.</span>
+      </a>
+      <div class="nav-actions">
+        <button class="btn btn-text" onclick="showPage('login')">Log in</button>
+        <button class="btn btn-primary" onclick="showPage('signup')">Sign up</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- APP HEADER -->
+  <header class="topbar app-header" id="appHeader">
+    <div class="container">
+      <a class="brand" href="#" onclick="showPage('home')">
+        Behind the <span>Sound.</span>
+      </a>
+      <button class="hamburger" onclick="toggleMenu()">☰</button>
+    </div>
+
+    <nav class="drawer" id="drawer">
+      <button onclick="navigate('home')">Home</button>
+      <button onclick="navigate('pretest')">Pre-test</button>
+      <button onclick="navigate('learning')">Learning</button>
+      <button onclick="navigate('practice')">Practice</button>
+      <button onclick="navigate('posttest')">Post-test</button>
+      <button onclick="logout()">Log out</button>
+    </nav>
+  </header>
+
+  <main>
+
+    <!-- LANDING PAGE -->
+    <section id="landing" class="view">
+      <div class="hero">
+        <div class="container hero-grid">
+
+          <div>
+            <div class="eyebrow">A simple guide to sound design</div>
+            <h1>BEHIND<br>THE <span>SOUND.</span></h1>
+
+            <p class="hero-copy">
+              1 Sound, Multiple Moods. Discover how audio processing
+              transforms ordinary sounds into something expressive.
+              Learn the tools, experiment with sound, and create
+              your own atmosphere.
+            </p>
+
+            <div class="hero-buttons">
+              <button class="btn btn-primary" onclick="showPage('signup')">
+                Start Learning →
+              </button>
+              <button class="btn btn-outline" onclick="showPage('login')">
+                I have an account
+              </button>
+            </div>
+          </div>
+
+          <div class="hero-art">
+            <div class="art-circle"></div>
+            <div class="sound-card">
+              <small>LISTEN CLOSER / 001</small>
+              <div class="wave">
+                <i></i><i></i><i></i><i></i><i></i><i></i>
+                <i></i><i></i><i></i><i></i><i></i><i></i>
+                <i></i><i></i><i></i><i></i><i></i><i></i>
+                <i></i><i></i><i></i><i></i><i></i><i></i>
+              </div>
+              <div class="sound-labels">
+                <span>ORIGINAL SOUND</span>
+                <span>00:08</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <section class="section">
+        <div class="container">
+          <div class="eyebrow">Explore the sound</div>
+          <h2 class="section-title">Hear it. Understand it. Shape it.</h2>
+          <p class="section-intro">
+            Learn the fundamentals of sound processing through
+            simple explanations and hands-on experiments.
+          </p>
+
+          <div class="benefits">
+            <div class="benefit">
+              <strong>01 — Understand</strong>
+              <p>Get to know the tools behind the sounds you hear every day.</p>
+            </div>
+            <div class="benefit">
+              <strong>02 — Experiment</strong>
+              <p>Adjust audio parameters and hear the difference in real time.</p>
+            </div>
+            <div class="benefit">
+              <strong>03 — Create</strong>
+              <p>Combine what you learn to shape your own sound and mood.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </section>
+
+    <!-- LOGIN -->
+    <section id="login" class="view" style="display:none">
+      <div class="auth-wrap">
+        <div class="auth-card">
+          <div class="eyebrow">Behind the Sound</div>
+          <h2>Welcome back.</h2>
+          <p class="muted">Log in to continue your learning journey.</p>
+
+          <form onsubmit="event.preventDefault(); demoLogin();">
+            <div class="field">
+              <label>Email</label>
+              <input type="email" id="loginEmail" placeholder="you@example.com" required>
+            </div>
+
+            <div class="field">
+              <label>Password</label>
+              <input type="password" id="loginPassword" placeholder="Enter your password" required>
+            </div>
+
+            <button class="btn btn-primary" type="submit">Log in</button>
+          </form>
+
+          <div class="auth-switch">
+            Don't have an account?
+            <button onclick="showPage('signup')">Sign up</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SIGN UP -->
+    <section id="signup" class="view" style="display:none">
+      <div class="auth-wrap">
+        <div class="auth-card">
+          <div class="eyebrow">Start exploring</div>
+          <h2>Create account.</h2>
+          <p class="muted">Join us and discover what sound can do.</p>
+
+          <form onsubmit="event.preventDefault(); demoSignup();">
+            <div class="field">
+              <label>Your name</label>
+              <input id="signupName" placeholder="Your name" required>
+            </div>
+
+            <div class="field">
+              <label>Email</label>
+              <input type="email" id="signupEmail" placeholder="you@example.com" required>
+            </div>
+
+            <div class="field">
+              <label>Password</label>
+              <input type="password" id="signupPassword" placeholder="Create a password" required>
+            </div>
+
+            <button class="btn btn-primary" type="submit">Create account</button>
+          </form>
+
+          <div class="auth-switch">
+            Already have an account?
+            <button onclick="showPage('login')">Log in</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- HOME -->
+    <section id="home" class="view page">
+      <div class="container">
+
+        <div class="welcome">
+          <div class="eyebrow">Your learning space</div>
+          <h1 id="welcomeName">Hello!</h1>
+          <p class="muted">Ready to explore the world of sound?</p>
+
+          <div style="max-width:420px">
+            <div class="muted" style="font-size:13px">
+              Your learning progress
+              <b id="progressText">0 / 7 lessons</b>
+            </div>
+            <div class="progress">
+              <span id="progressBar"></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="eyebrow">Choose your next step</div>
+        <h2 class="section-title">What would you like to explore?</h2>
+
+        <div class="feature-grid">
+          <article class="feature" onclick="navigate('learning')">
+            <div class="feature-icon">▤</div>
+            <h3>Learning</h3>
+            <p>Understand audio tools and experiment with sound as you learn.</p>
+          </article>
+
+          <article class="feature" onclick="navigate('practice')">
+            <div class="feature-icon">☷</div>
+            <h3>Practice</h3>
+            <p>Put your knowledge into practice through sound challenges.</p>
+          </article>
+
+          <article class="feature" onclick="navigate('posttest')">
+            <div class="feature-icon">✓</div>
+            <h3>Post-test</h3>
+            <p>Review what you have learned and check your progress.</p>
+          </article>
+        </div>
+
+        <div class="content-panel" style="max-width:none;margin-top:28px">
+          <div class="eyebrow">A good place to start</div>
+          <h3>Take the Pre-test</h3>
+          <p>
+            Try a short set of questions before learning.
+            You can compare your results after completing the lessons.
+          </p>
+          <button class="btn btn-outline" onclick="navigate('pretest')">
+            Go to Pre-test →
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- LEARNING OVERVIEW -->
+    <section id="learning" class="view page">
+      <div class="container">
+        <div class="eyebrow">01 / Learn the tools</div>
+        <h1 class="section-title">Learning</h1>
+        <p class="section-intro">
+          Understand the tools behind every sound.
+          Choose a lesson to explore its concepts and try the controls.
+        </p>
+        <div class="lesson-list" id="lessonList"></div>
+      </div>
+    </section>
+
+    <!-- LESSON DETAIL -->
+    <section id="lesson" class="view page">
+      <div class="container">
+        <button class="btn btn-text" onclick="navigate('learning')">
+          ← Back to Learning
+        </button>
+
+        <div class="eyebrow" id="lessonNumber">LESSON 01 / 07</div>
+        <h1 class="section-title" id="lessonTitle">Understanding Filter</h1>
+        <p class="section-intro" id="lessonIntro"></p>
+
+        <div class="content-panel">
+          <h3>How it works</h3>
+          <p id="lessonTheory"></p>
+
+          <h3>Listen & Compare</h3>
+          <p>
+            In the full learning version, you will be able to play
+            the original sound and compare it with the processed version.
+          </p>
+
+          <div class="field">
+            <label>Try adjusting a sample control</label>
+            <input
+              type="range"
+              min="0"
+              max="100"
+              value="50"
+              oninput="document.getElementById('controlValue').textContent=this.value"
+            >
+          </div>
+
+          <p class="muted">
+            Control value: <b id="controlValue">50</b>
+          </p>
+
+          <h3>Quick Check</h3>
+          <p id="lessonQuestion">Which setting changes the sound?</p>
+
+          <button class="btn btn-primary" onclick="completeLesson()">
+            Complete Lesson
+          </button>
+
+          <p class="notice">
+            หมายเหตุ: ตัวเลื่อนในต้นแบบนี้เป็นเพียงตัวอย่าง UI
+            ยังไม่ได้ประมวลผลเสียงจริง
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- PRACTICE -->
+    <section id="practice" class="view page">
+      <div class="container">
+        <div class="eyebrow">02 / Try it yourself</div>
+        <h1 class="section-title">Practice</h1>
+        <p class="section-intro">
+          Use what you learned to solve these sound design challenges.
+        </p>
+
+        <div class="feature-grid">
+          <article class="feature">
+            <div class="eyebrow">EASY</div>
+            <h3>Voice Clarity</h3>
+            <p>Explore Filter, EQ and Gain Stage to make a voice sound clearer.</p>
+            <button class="btn btn-outline" onclick="openChallenge('Voice Clarity')">
+              Start challenge →
+            </button>
+          </article>
+
+          <article class="feature">
+            <div class="eyebrow">MEDIUM</div>
+            <h3>Dynamic Control</h3>
+            <p>Explore Compressor and Gain Stage to manage volume changes.</p>
+            <button class="btn btn-outline" onclick="openChallenge('Dynamic Control')">
+              Start challenge →
+            </button>
+          </article>
+
+          <article class="feature">
+            <div class="eyebrow">CREATIVE</div>
+            <h3>Creative Space</h3>
+            <p>Combine Reverb, Delay and Pitch Shift to create a new atmosphere.</p>
+            <button class="btn btn-outline" onclick="openChallenge('Creative Space')">
+              Start challenge →
+            </button>
+          </article>
+        </div>
+
+        <div class="content-panel" id="challengePanel" style="display:none">
+          <h3 id="challengeTitle"></h3>
+          <p>
+            This is a sample practice screen. Add your original audio,
+            reference audio and real-time audio workspace here.
+          </p>
+          <button class="btn btn-primary" onclick="document.getElementById('challengePanel').style.display='none'">
+            Close
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- PRE-TEST -->
+    <section id="pretest" class="view page">
+      <div class="container">
+        <div class="eyebrow">Check your starting point</div>
+        <h1 class="section-title">Pre-test</h1>
+
+        <div class="content-panel">
+          <h3>Before you begin</h3>
+          <p>
+            Answer a few questions about sound and audio processing.
+            Your results will help you see what you learn later.
+          </p>
+          <button class="btn btn-primary" onclick="alert('ตัวอย่างเท่านั้น: สามารถเพิ่มระบบคำถามและบันทึกคะแนนในขั้นตอนถัดไป')">
+            Start Pre-test →
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- POST-TEST -->
+    <section id="posttest" class="view page">
+      <div class="container">
+        <div class="eyebrow">Review your progress</div>
+        <h1 class="section-title">Post-test</h1>
+
+        <div class="content-panel">
+          <h3>Show what you have learned.</h3>
+          <p>
+            Complete the theory questions and sound design challenge
+            to review your progress.
+          </p>
+          <button class="btn btn-primary" onclick="alert('ตัวอย่างเท่านั้น: สามารถเพิ่มข้อสอบและระบบประเมินผลในขั้นตอนถัดไป')">
+            Start Post-test →
+          </button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <div class="container">
+      © 2026 Behind the Sound. Learn how sound shapes the way we feel.
+    </div>
+  </footer>
+
+  <!-- JAVASCRIPT -->
+  <script>
+    const lessons = [
+      [
+        "Filter",
+        "Learn how filters remove or reduce selected frequency ranges.",
+        "A filter changes the frequencies that pass through an audio signal. A High-pass Filter (HPF) reduces low frequencies, while a Low-pass Filter (LPF) reduces high frequencies."
+      ],
+      [
+        "EQ",
+        "Shape the tone by adjusting different frequency ranges.",
+        "An equalizer (EQ) lets you boost or reduce selected frequency bands to change the tone of a sound."
+      ],
+      [
+        "Compressor",
+        "Control the difference between loud and quiet parts.",
+        "A compressor reduces dynamic range when the signal rises above a chosen threshold. Ratio controls how strongly the level is reduced."
+      ],
+      [
+        "Gain Stage",
+        "Understand input level, output level and clipping.",
+        "Gain staging means managing signal levels through an audio system to keep a healthy level and avoid unwanted clipping."
+      ],
+      [
+        "Reverb",
+        "Create the feeling of space and environment.",
+        "Reverb simulates sound reflections in an environment. Decay controls how long the reverberation lasts."
+      ],
+      [
+        "Delay",
+        "Create echoes and rhythmic repetitions.",
+        "Delay plays a copy of the original sound after a set time. Feedback controls how much of the delayed signal is sent back into the effect."
+      ],
+      [
+        "Pitch Shift",
+        "Change the perceived pitch of a sound.",
+        "Pitch shifting moves a sound higher or lower without changing the original performance."
+      ]
+    ];
+
+    let completed = new Set();
+    let currentLesson = 0;
+
+    function showPage(id) {
+      document.querySelectorAll(".view").forEach(el => {
+        el.style.display = "none";
+      });
+
+      const page = document.getElementById(id);
+      if (page) page.style.display = "block";
+
+      const isApp = [
+        "home", "learning", "lesson",
+        "practice", "pretest", "posttest"
+      ].includes(id);
+
+      document.getElementById("landingHeader").style.display =
+        isApp ? "none" : "block";
+
+      document.getElementById("appHeader").style.display =
+        isApp ? "block" : "none";
+
+      document.getElementById("drawer").classList.remove("open");
+
+      window.scrollTo(0,0);
+    }
+
+    function toggleMenu() {
+      document.getElementById("drawer").classList.toggle("open");
+    }
+
+    function navigate(id) {
+      showPage(id);
+    }
+
+    function demoLogin() {
+      const email = document.getElementById("loginEmail").value;
+      const name = email.split("@")[0] || "Learner";
+      enterApp(name);
+    }
+
+    function demoSignup() {
+      const name =
+        document.getElementById("signupName").value.trim() || "Learner";
+      enterApp(name);
+    }
+
+    function enterApp(name) {
+      document.getElementById("welcomeName").textContent =
+        "Hello, " + name + "!";
+
+      renderLessons();
+      updateProgress();
+      showPage("home");
+    }
+
+    function logout() {
+      showPage("landing");
+    }
+
+    function renderLessons() {
+      const list = document.getElementById("lessonList");
+      list.innerHTML = "";
+
+      lessons.forEach((lesson,i) => {
+        const item = document.createElement("div");
+        item.className = "lesson";
+
+        item.innerHTML = `
+          <div class="lesson-number">0${i+1}</div>
+          <div>
+            <b>${lesson[0]}</b>
+            <p>${lesson[1]}</p>
+          </div>
+          <div class="lesson-arrow">
+            ${completed.has(i) ? "✓" : "→"}
+          </div>
+        `;
+
+        item.onclick = () => openLesson(i);
+        list.appendChild(item);
+      });
+    }
+
+    function openLesson(i) {
+      currentLesson = i;
+
+      document.getElementById("lessonNumber").textContent =
+        `LESSON 0${i+1} / 07`;
+
+      document.getElementById("lessonTitle").textContent =
+        "Understanding " + lessons[i][0];
+
+      document.getElementById("lessonIntro").textContent =
+        lessons[i][1];
+
+      document.getElementById("lessonTheory").textContent =
+        lessons[i][2];
+
+      showPage("lesson");
+    }
+
+    function completeLesson() {
+      completed.add(currentLesson);
+      updateProgress();
+      renderLessons();
+      showPage("learning");
+    }
+
+    function updateProgress() {
+      const count = completed.size;
+
+      document.getElementById("progressText").textContent =
+        `${count} / 7 lessons`;
+
+      document.getElementById("progressBar").style.width =
+        `${count/7*100}%`;
+    }
+
+    function openChallenge(name) {
+      document.getElementById("challengeTitle").textContent = name;
+      document.getElementById("challengePanel").style.display = "block";
+
+      document.getElementById("challengePanel").scrollIntoView({
+        behavior: "smooth",
+        block: "center"
+      });
+    }
+
+    renderLessons();
+    showPage("landing");
+  </script>
+
+</body>
+</html>
