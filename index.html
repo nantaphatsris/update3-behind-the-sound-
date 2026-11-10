@@ -1,0 +1,658 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Behind The Sound</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&family=Montserrat:wght@400;500;600;700;800&display=swap');
+
+:root {
+  --bg: #100e0c;
+  --panel: #191512;
+  --orange: #ff9d43;
+  --gold: #e8a04d;
+  --text: #f4e7d9;
+  --muted: #b9a99a;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Montserrat', 'Kanit', sans-serif;
+  overflow-x: hidden;
+}
+
+/* HEADER */
+
+header {
+  width: 100%;
+  height: 75px;
+  padding: 0 30px;
+  display: flex;
+  align-items: center;
+  background: rgba(20,17,14,0.97);
+  border-bottom: 1px solid rgba(255,157,67,0.25);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.menu-toggle {
+  background: transparent;
+  border: none;
+  color: var(--orange);
+  font-size: 29px;
+  cursor: pointer;
+  padding: 5px;
+  line-height: 1;
+  transition: .3s;
+}
+
+.menu-toggle:hover {
+  color: #ffc078;
+  transform: scale(1.08);
+}
+
+.logo {
+  font-size: 23px;
+  font-weight: 800;
+  color: var(--orange);
+  white-space: nowrap;
+  letter-spacing: -0.5px;
+}
+
+/* DROPDOWN MENU */
+
+nav {
+  display: none;
+  position: absolute;
+  top: 75px;
+  left: 0;
+  width: 290px;
+  height: calc(100vh - 75px);
+  padding: 25px;
+  background: #191512;
+  border-right: 1px solid rgba(255,157,67,.35);
+  border-bottom: 1px solid rgba(255,157,67,.35);
+  box-shadow: 0 15px 35px rgba(0,0,0,.5);
+  flex-direction: column;
+  gap: 0;
+  overflow-y: auto;
+}
+
+nav.active {
+  display: flex;
+}
+
+nav > a {
+  color: #e8d6c5;
+  text-decoration: none;
+  font-size: 16px;
+  padding: 20px 10px;
+  border-bottom: 1px solid rgba(255,157,67,.15);
+  transition: .3s;
+}
+
+nav > a:hover {
+  color: var(--orange);
+  padding-left: 18px;
+}
+
+.menu-auth {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: auto;
+  padding-top: 30px;
+}
+
+.menu-auth a,
+.menu-auth button {
+  width: 100%;
+  text-align: center;
+  padding: 13px;
+  border: 1px solid var(--orange);
+  border-radius: 25px;
+  text-decoration: none;
+  color: var(--orange);
+  background: transparent;
+  font-family: inherit;
+  font-size: 15px;
+  cursor: pointer;
+  transition: .3s;
+}
+
+.menu-auth a:last-child {
+  background: var(--orange);
+  color: #19110a;
+}
+
+.menu-auth a:hover,
+.menu-auth button:hover {
+  box-shadow: 0 0 15px rgba(255,157,67,.3);
+}
+
+/* HERO */
+
+.hero {
+  min-height: 650px;
+  padding: 110px 8% 90px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  position: relative;
+  background:
+    radial-gradient(ellipse at 50% 55%, rgba(192,95,25,.13), transparent 55%),
+    linear-gradient(180deg, #15110e, #100e0c);
+}
+
+.hero-content {
+  max-width: 950px;
+  position: relative;
+  z-index: 1;
+}
+
+.hero h1 {
+  font-size: clamp(42px, 7vw, 78px);
+  line-height: 1.15;
+  font-weight: 800;
+  color: var(--orange);
+  letter-spacing: -2px;
+  text-shadow: 0 0 35px rgba(255,145,50,.2);
+}
+
+.hero h2 {
+  font-size: clamp(17px, 2.5vw, 26px);
+  font-weight: 400;
+  color: #e7a36c;
+  margin-top: 18px;
+  letter-spacing: 1px;
+}
+
+.hero p {
+  margin: 35px auto 0;
+  max-width: 750px;
+  font-size: 16px;
+  line-height: 2;
+  color: #c6b7a9;
+}
+
+/* SOUND WAVE */
+
+.sound-line {
+  width: 100%;
+  height: 85px;
+  margin: 55px auto 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  opacity: .85;
+}
+
+.sound-line span {
+  width: 4px;
+  border-radius: 10px;
+  background: linear-gradient(to top, #a95120, #ffb253);
+  box-shadow: 0 0 12px rgba(255,151,54,.4);
+  animation: wave 1s ease-in-out infinite alternate;
+}
+
+.sound-line span:nth-child(3n) {
+  animation-delay: .2s;
+}
+
+.sound-line span:nth-child(3n+1) {
+  animation-delay: .4s;
+}
+
+.sound-line span:nth-child(3n+2) {
+  animation-delay: .1s;
+}
+
+@keyframes wave {
+  from { transform: scaleY(.45); }
+  to { transform: scaleY(1); }
+}
+
+/* CONTENT SECTIONS */
+
+section {
+  padding: 100px 10%;
+  scroll-margin-top: 85px;
+}
+
+.section-title {
+  font-size: 34px;
+  font-weight: 700;
+  color: var(--orange);
+  margin-bottom: 30px;
+}
+
+/* ABOUT */
+
+.about {
+  background: #15110e;
+  text-align: center;
+}
+
+.about p {
+  max-width: 900px;
+  margin: auto;
+  color: #c8b9aa;
+  font-family: 'Kanit', sans-serif;
+  font-size: 17px;
+  line-height: 2.2;
+}
+
+/* EXPLORE */
+
+.explore {
+  background:
+    radial-gradient(ellipse at 50% 40%, rgba(173,87,30,.08), transparent 70%),
+    #100e0c;
+}
+
+.explore-inner {
+  max-width: 1000px;
+  margin: auto;
+}
+
+.explore .section-title {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.explore-item {
+  padding: 27px 0;
+  border-bottom: 1px solid rgba(255,157,67,.18);
+}
+
+.explore-item p {
+  color: #c8b9aa;
+  font-size: 16px;
+  line-height: 2;
+}
+
+.explore-item strong {
+  color: var(--orange);
+  font-weight: 600;
+}
+
+/* CLOSING */
+
+.closing {
+  text-align: center;
+  padding: 90px 20px 110px;
+  background:
+    radial-gradient(ellipse at center, rgba(201,105,34,.16), transparent 65%),
+    #15110e;
+}
+
+.closing h2 {
+  color: var(--orange);
+  font-size: clamp(24px, 4vw, 38px);
+  margin-bottom: 20px;
+}
+
+.closing p {
+  color: #c8b9aa;
+  font-size: 16px;
+  margin-bottom: 40px;
+}
+
+/* BOTTOM AUTH BUTTONS */
+
+.auth-buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+
+.auth-buttons a,
+.auth-buttons button {
+  min-width: 155px;
+  padding: 15px 35px;
+  border-radius: 35px;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: .3s;
+}
+
+.login {
+  color: var(--orange);
+  border: 1px solid var(--orange);
+  background: transparent;
+}
+
+.signup {
+  color: #21140a;
+  background: linear-gradient(135deg,#ffc078,#f28b32);
+  border: 1px solid #ffb05b;
+  box-shadow: 0 0 20px rgba(255,151,54,.2);
+}
+
+.auth-buttons a:hover,
+.auth-buttons button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 0 25px rgba(255,151,54,.4);
+}
+
+/* FOOTER */
+
+footer {
+  text-align: center;
+  padding: 25px;
+  background: #0c0a09;
+  border-top: 1px solid rgba(255,157,67,.15);
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 800px) {
+  .hero {
+    min-height: 550px;
+    padding: 90px 7%;
+  }
+
+  section {
+    padding: 75px 7%;
+  }
+}
+
+@media (max-width: 450px) {
+  header {
+    padding: 0 18px;
+  }
+
+  .logo {
+    font-size: 21px;
+  }
+
+  nav {
+    width: 260px;
+  }
+
+  .auth-buttons {
+    gap: 12px;
+  }
+
+  .auth-buttons a,
+  .auth-buttons button {
+    min-width: 125px;
+    padding: 13px 22px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+
+<header>
+  <div class="header-left">
+
+    <button
+      class="menu-toggle"
+      onclick="toggleMenu()"
+      aria-label="Toggle menu"
+      aria-expanded="false"
+      id="menuButton">
+      ☰
+    </button>
+
+    <div class="logo">Behind The Sound</div>
+
+  </div>
+
+  <!-- MENU -->
+
+  <nav id="mainMenu">
+
+    <a href="#pre-test" onclick="closeMenu()">Pre Test</a>
+
+    <a href="#learning" onclick="closeMenu()">Learning</a>
+
+    <a href="#practice" onclick="closeMenu()">Practice</a>
+
+    <a href="#post-test" onclick="closeMenu()">Post Test</a>
+
+    <div class="menu-auth" id="menuAuth">
+      <a href="login.html">Log In</a>
+      <a href="signup.html">Sign Up</a>
+    </div>
+
+  </nav>
+</header>
+
+<main>
+
+  <!-- HERO -->
+
+  <section class="hero">
+
+    <div class="hero-content">
+
+      <h1>BEHIND THE SOUND.</h1>
+
+      <h2>Hear It. Understand It. Create It.</h2>
+
+      <p>
+        Discover the science behind sound and explore the world of audio processing.
+        Learn through interactive lessons, experiment with real audio effects,
+        and train your ears through hands-on practice.
+      </p>
+
+      <div class="sound-line" aria-hidden="true">
+        <span style="height:25px"></span>
+        <span style="height:42px"></span>
+        <span style="height:65px"></span>
+        <span style="height:35px"></span>
+        <span style="height:75px"></span>
+        <span style="height:48px"></span>
+        <span style="height:30px"></span>
+        <span style="height:62px"></span>
+        <span style="height:80px"></span>
+        <span style="height:45px"></span>
+        <span style="height:28px"></span>
+        <span style="height:70px"></span>
+        <span style="height:55px"></span>
+        <span style="height:35px"></span>
+        <span style="height:75px"></span>
+        <span style="height:40px"></span>
+        <span style="height:60px"></span>
+        <span style="height:25px"></span>
+        <span style="height:50px"></span>
+        <span style="height:72px"></span>
+        <span style="height:38px"></span>
+        <span style="height:55px"></span>
+        <span style="height:30px"></span>
+        <span style="height:65px"></span>
+        <span style="height:42px"></span>
+        <span style="height:22px"></span>
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- ABOUT -->
+
+  <section class="about">
+
+    <h2 class="section-title">About the Website</h2>
+
+    <p>
+      Behind The Sound คือเว็บไซต์สื่อการเรียนรู้เกี่ยวกับ Sound ที่ออกแบบมาเพื่อให้ผู้เรียนเข้าใจพื้นฐานทางเสียงและการทำงานของ Audio Processor ผ่านการเรียนรู้ที่ผสมผสานระหว่างทฤษฎีและการทดลองจริง
+      ผู้เรียนจะได้เรียนรู้ตั้งแต่หลักการทางวิทยาศาสตร์ของเสียง ไปจนถึงการใช้งาน Audio Processor แต่ละประเภท พร้อมทดลองปรับแต่งเสียงด้วยตัวเอง เพื่อให้เข้าใจว่าแต่ละการปรับเปลี่ยนส่งผลต่อเสียงอย่างไร
+    </p>
+
+  </section>
+
+  <!-- WHAT YOU WILL EXPLORE -->
+
+  <section class="explore">
+
+    <div class="explore-inner">
+
+      <h2 class="section-title">What You Will Explore</h2>
+
+      <div class="explore-item" id="pre-test">
+        <p>
+          <strong>Sound Fundamentals:</strong>
+          Understand sound waves, frequency, hearing, and waveforms.
+        </p>
+      </div>
+
+      <div class="explore-item" id="learning">
+        <p>
+          <strong>Audio Processors:</strong>
+          Discover and experiment with Filter, EQ, Compressor, Gain Stage, Reverb, Delay, and Pitch Shift.
+        </p>
+      </div>
+
+      <div class="explore-item" id="practice">
+        <p>
+          <strong>Interactive Practice:</strong>
+          Challenge yourself to recreate target sounds, receive feedback, and improve your skills.
+        </p>
+      </div>
+
+      <div class="explore-item" id="post-test">
+        <p>
+          <strong>Track Your Progress:</strong>
+          Monitor your learning journey and evaluate your knowledge through a final assessment.
+        </p>
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- BOTTOM -->
+
+  <section class="closing">
+
+    <h2>Don't Just Learn About Sound. Experience It.</h2>
+
+    <p>
+      Start your journey and discover what's behind the sound.
+    </p>
+
+    <div class="auth-buttons" id="authButtons">
+
+      <a href="login.html" class="login">Log In</a>
+
+      <a href="signup.html" class="signup">Sign Up</a>
+
+    </div>
+
+  </section>
+
+</main>
+
+<footer></footer>
+
+<script>
+
+/* MENU OPEN / CLOSE */
+
+function toggleMenu() {
+
+  const menu = document.getElementById("mainMenu");
+  const button = document.getElementById("menuButton");
+
+  menu.classList.toggle("active");
+
+  button.setAttribute(
+    "aria-expanded",
+    menu.classList.contains("active")
+  );
+
+}
+
+function closeMenu() {
+
+  document.getElementById("mainMenu")
+    .classList.remove("active");
+
+  document.getElementById("menuButton")
+    .setAttribute("aria-expanded", "false");
+
+}
+
+/* AUTHENTICATION UI */
+
+function setLoggedIn(isLoggedIn) {
+
+  const menuAuth = document.getElementById("menuAuth");
+  const authButtons = document.getElementById("authButtons");
+
+  if (isLoggedIn) {
+
+    menuAuth.innerHTML = `
+      <button onclick="handleLogout()">Log Out</button>
+    `;
+
+    authButtons.innerHTML = `
+      <button class="login" onclick="handleLogout()">
+        Log Out
+      </button>
+    `;
+
+  } else {
+
+    menuAuth.innerHTML = `
+      <a href="login.html">Log In</a>
+      <a href="signup.html">Sign Up</a>
+    `;
+
+    authButtons.innerHTML = `
+      <a href="login.html" class="login">Log In</a>
+      <a href="signup.html" class="signup">Sign Up</a>
+    `;
+
+  }
+
+}
+
+function handleLogout() {
+
+  // Connect to the actual authentication logout system here.
+  setLoggedIn(false);
+
+}
+
+// Default state: Not logged in
+setLoggedIn(false);
+
+</script>
+
+</body>
+</html>
